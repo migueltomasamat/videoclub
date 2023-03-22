@@ -2,6 +2,10 @@
 
 namespace Modelos;
 
+include_once "Soporte.php";
+
+use Modelos\Soporte;
+
 class CintaVideo extends Soporte
 {
     private int $duracion;
