@@ -2,6 +2,8 @@
 
 
 namespace Modelos;
+require_once __DIR__."/../Conexion.php";
+use PDO;
 
 class Cliente
 {
@@ -48,6 +50,16 @@ class Cliente
         echo "Soportes Alquilados: ". count($this->soportesAlquilados);
     }
 
+    /**
+     * @return array
+     */
+    public function getSoportesAlquilados(): array
+    {
+        return $this->soportesAlquilados;
+    }
+
+
+
     public function tieneAlquilado(Soporte $soporte):bool{
         $retorno=false;
         foreach ($this->soportesAlquilados as $soporteAlquilado){
@@ -93,14 +105,50 @@ class Cliente
 
 
     }
-    function listaAlquileres():void{
 
-        echo "El cliente $this->nombre tiene $this->numSoportesAlquilados<br>";
-        foreach ($this->soportesAlquilados as $soporte){
-            $soporte->muestraResumen();
-        }
+
+    /**
+     * @return int
+     */
+    public function getMaxAlquilerConcurrente(): int
+    {
+        return $this->maxAlquilerConcurrente;
+    }
+
+    public function store(Cliente $cliente){
+
+        $conexion=self::crearConexion();
+        almacenar($cliente,$conexion);
 
     }
+    public static function staticStore(Cliente $cliente){
+
+        $conexion=self::crearConexion();
+        almacenar($cliente,$conexion);
+
+    }
+
+    private function almacenar(Cliente $cliente, PDO $conexion){
+        $query="insert into cliente (nombre,num_soportes_alquilados,max_alquiler_concurrente) values(?,?,?)";
+        $sentenciaPreparada = $conexion->prepare($query);
+
+        $sentenciaPreparada->bindValue(1,$cliente->nombre);
+        $sentenciaPreparada->bindValue(2,$cliente->getNumSoportesAlquilados());
+        $sentenciaPreparada->bindValue(3,$cliente->getMaxAlquilerConcurrente());
+
+        $sentenciaPreparada->execute();
+    }
+    public static function crearConexion():PDO{
+        try {
+            $conexion = new PDO('mysql:dbname='.BASEDATOS.';host='.SERVIDOR, USUARIO, PASSWORD);
+            $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo 'Falló la conexión: ' . $e->getMessage();
+        }
+        return $conexion;
+    }
+
+
 
 
 
