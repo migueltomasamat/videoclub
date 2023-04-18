@@ -1,9 +1,10 @@
 <?php
 
 
-namespace Modelos;
-require_once __DIR__."/../Conexion.php";
-use PDO;
+namespace App\Modelos;
+
+use app\Databases\ClienteDatabase;
+use BD;
 
 class Cliente
 {
@@ -106,7 +107,6 @@ class Cliente
 
     }
 
-
     /**
      * @return int
      */
@@ -115,43 +115,56 @@ class Cliente
         return $this->maxAlquilerConcurrente;
     }
 
-    public function store(Cliente $cliente){
+    public static function crearClienteFromArray(array $array):Cliente{
 
-        $conexion=self::crearConexion();
-        almacenar($cliente,$conexion);
+        $cliente = new Cliente($array["nombre"],$array['numero'],$array['max_alquiler_concurrente']);
 
-    }
-    public static function staticStore(Cliente $cliente){
+        $cliente->setNumSoportesAlquilados($array['num_soportes_alquilados']);
 
-        $conexion=self::crearConexion();
-        almacenar($cliente,$conexion);
+        return $cliente;
 
     }
 
-    private function almacenar(Cliente $cliente, PDO $conexion){
-        $query="insert into cliente (nombre,num_soportes_alquilados,max_alquiler_concurrente) values(?,?,?)";
-        $sentenciaPreparada = $conexion->prepare($query);
-
-        $sentenciaPreparada->bindValue(1,$cliente->nombre);
-        $sentenciaPreparada->bindValue(2,$cliente->getNumSoportesAlquilados());
-        $sentenciaPreparada->bindValue(3,$cliente->getMaxAlquilerConcurrente());
-
-        $sentenciaPreparada->execute();
-    }
-    public static function crearConexion():PDO{
-        try {
-            $conexion = new PDO('mysql:dbname='.BASEDATOS.';host='.SERVIDOR, USUARIO, PASSWORD);
-            $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            echo 'Falló la conexión: ' . $e->getMessage();
-        }
-        return $conexion;
+    /**
+     * @param array $soportesAlquilados
+     */
+    public function setSoportesAlquilados(array $soportesAlquilados): void
+    {
+        $this->soportesAlquilados = $soportesAlquilados;
     }
 
+    /**
+     * @param int $numSoportesAlquilados
+     */
+    public function setNumSoportesAlquilados(int $numSoportesAlquilados): void
+    {
+        $this->numSoportesAlquilados = $numSoportesAlquilados;
+    }
 
+    /**
+     * @param int $maxAlquilerConcurrente
+     */
+    public function setMaxAlquilerConcurrente(int $maxAlquilerConcurrente): void
+    {
+        $this->maxAlquilerConcurrente = $maxAlquilerConcurrente;
+    }
 
+    public function __serialize(): array
+    {
+        return [
+            "nombre"=>$this->nombre,
+            "numero"=>$this->numero,
+            "numSoportesAlquilados"=>$this->numSoportesAlquilados,
+            "maxAlquilerConcurrente"=>$this->maxAlquilerConcurrente
+        ];
+    }
 
+    /* Funciones relacionadas con el almacenamiento de BD */
+    public function almacenar():void{
+        ClienteDatabase::staticStore($this);
+    }
 
-
-
+    public function borrar():void{
+        ClienteDatabase::staticDelete($this);
+    }
 }

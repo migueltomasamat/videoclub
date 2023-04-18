@@ -1,8 +1,10 @@
 <?php
 
-namespace Vista;
+namespace app\Vista;
 
-use Modelos\Cliente;
+
+
+use app\Modelos\Cliente;
 
 class ClienteVista
 {
@@ -12,5 +14,9 @@ class ClienteVista
         foreach ($cliente->getSoportesAlquilados() as $soporte){
             $soporte->muestraResumen();
         }
+    }
+
+    public static function mostrarDatosCliente(string $mostrar):void{
+        echo $mostrar;
     }
 }

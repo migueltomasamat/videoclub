@@ -5,10 +5,10 @@ include_once "Modelos/DVD.php";
 include_once "Modelos/Juego.php";
 include_once "Modelos/Cliente.php";
 
-use Modelos\Cliente;
-use Modelos\CintaVideo;
-use Modelos\Juego;
-use Modelos\DVD;
+use app\Modelos\CintaVideo;
+use app\Modelos\Cliente;
+use app\Modelos\DVD;
+use app\Modelos\Juego;
 
 //instanciamos un par de objetos cliente
 $cliente1 = new Cliente("Bruce Wayne", 23);

@@ -1,10 +1,8 @@
 <?php
 
-namespace Modelos;
+namespace App\Modelos;
 
 include_once "Soporte.php";
-
-use Modelos\Soporte;
 
 class CintaVideo extends Soporte
 {
@@ -15,6 +13,15 @@ class CintaVideo extends Soporte
         parent::__construct($titulo, $numero, $precio);
         $this->duracion=$duracion;
     }
+
+    /**
+     * @return int
+     */
+    public function getDuracion(): int
+    {
+        return $this->duracion;
+    }
+
     public function muestraResumen(): void
     {
         parent::muestraResumen();
