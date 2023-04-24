@@ -3,6 +3,8 @@
 namespace App\Controladores;
 
 use App\Databases\ClienteDatabase;
+use App\Modelos\Cliente;
+use App\Modelos\DVD;
 use App\Vista\ClienteVista;
 
 class ClienteControlador
@@ -23,7 +25,14 @@ class ClienteControlador
     }
 
     public function load (int $numeroCliente){
+        $cliente=ClienteDatabase::staticLoad($numeroCliente);
+        $cliente->alquilar(new DVD('Batman',1548,2.4,'es-en','16:9'));
+        ClienteDatabase::staticStore($cliente);
+    }
 
+    public function store(){
+        $cliente=new Cliente('Alba',4,3);
+        ClienteDatabase::staticStore($cliente);
     }
 
     public function index(){

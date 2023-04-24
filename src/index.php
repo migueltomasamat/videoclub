@@ -6,9 +6,17 @@ use App\Controladores\ClienteControlador;
 
 $router = new Router();
 
-$router->get("/clientes",[ClienteControlador::class,'index'])
-    ->get('/cliente',[ClienteControlador::class,'show']);
+$router->get('/',[VistaIndex::class,'index']);
 
-$router->resolver($_SERVER['REQUEST_URI'],$_SERVER['REQUEST_METHOD']);
+$router->get("/clientes",[ClienteControlador::class,'index'])
+    ->get('/cliente',[ClienteControlador::class,'show'])
+    ->post('/cliente',[ClienteControlador::class,'store']);
+
+
+
+
+
+
+//$router->resolver($_SERVER['REQUEST_URI'],$_SERVER['REQUEST_METHOD']);
 
 

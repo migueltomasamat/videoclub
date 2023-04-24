@@ -4,6 +4,7 @@
 namespace App\Modelos;
 
 use app\Databases\ClienteDatabase;
+use App\Databases\SoporteDatabase;
 use BD;
 
 class Cliente
@@ -78,6 +79,7 @@ class Cliente
                 echo "Ya tienes alquilado este soporte";
             }else{
                 $this->soportesAlquilados[]=$soporte;
+                /*SoporteDatabase::alquilarSoporte($soporte,$this);*/
                 $this->numSoportesAlquilados++;
                 $retorno=true;
             }

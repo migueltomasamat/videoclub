@@ -35,6 +35,24 @@ class ClienteDatabase
 
     }
 
+    public static function editarCliente(Cliente $cliente){
+        $conexion = BD::crearConexion();
+        $sentenciaPreparada = $conexion->prepare
+        ("update cliente set nombre=:nombre,num_soportes_alquilados=:numSoportes,max_alquiler_concurrente=:maxAlquiler where numero=:numCliente");
+
+        $sentenciaPreparada->bindValue('nombre',$cliente->nombre);
+        $sentenciaPreparada->bindValue('numSoportes',$cliente->getNumSoportesAlquilados());
+        $sentenciaPreparada->bindValue('maxAlquiler',$cliente->getMaxAlquilerConcurrente());
+        $sentenciaPreparada->bindValue('numCliente',$cliente->getNumero());
+
+        $sentenciaPreparada->execute();
+
+        //Almacenamiento de los alquileres
+        foreach ($cliente->getSoportesAlquilados() as $alquilado){
+            SoporteDatabase::alquilarSoporte($alquilado,$cliente);
+        }
+    }
+
     public static function staticDeleteFromID(int $id){
         $conexion = BD::crearConexion();
         $query = "delete from cliente where numero=:iden";
