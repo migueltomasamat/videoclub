@@ -4,7 +4,7 @@
 namespace App\Modelos;
 
 
-class Soporte
+class Soporte implements \JsonSerializable
 {
     public string $titulo;
     protected int $numero;
@@ -43,5 +43,13 @@ class Soporte
         echo"<br>Precio:".$this->getPrecio()." euros";
         echo"<br>Precio IVA incluido: ".$this->getPrecioConIVA()." euros";
 
+    }
+    public function jsonSerialize(): mixed
+    {
+        return [
+          "numero"=>$this->numero,
+          "titulo"=>$this->titulo,
+          "precio"=>$this->precio
+        ];
     }
 }

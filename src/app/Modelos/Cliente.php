@@ -7,7 +7,7 @@ use app\Databases\ClienteDatabase;
 use App\Databases\SoporteDatabase;
 use BD;
 
-class Cliente
+class Cliente implements \JsonSerializable
 {
     public string $nombre;
     private int $numero;
@@ -123,6 +123,8 @@ class Cliente
 
         $cliente->setNumSoportesAlquilados($array['num_soportes_alquilados']);
 
+
+
         return $cliente;
 
     }
@@ -151,13 +153,14 @@ class Cliente
         $this->maxAlquilerConcurrente = $maxAlquilerConcurrente;
     }
 
-    public function __serialize(): array
+    public function jsonSerialize(): array
     {
         return [
             "nombre"=>$this->nombre,
-            "numero"=>$this->numero,
+            "numero"=>$this->getNumero(),
             "numSoportesAlquilados"=>$this->numSoportesAlquilados,
-            "maxAlquilerConcurrente"=>$this->maxAlquilerConcurrente
+            "maxAlquilerConcurrente"=>$this->maxAlquilerConcurrente,
+            "soportesAlquilados"=>$this->soportesAlquilados
         ];
     }
 
@@ -168,5 +171,13 @@ class Cliente
 
     public function borrar():void{
         ClienteDatabase::staticDelete($this);
+    }
+
+    public static function convertirFilaACliente(array $fila):Cliente{
+       $cliente = new Cliente($fila['nombre'],$fila['numero'],$fila['max_alquiler_concurrente']);
+       $cliente->setNumSoportesAlquilados($fila['num_soportes_alquilados']);
+
+
+       return $cliente;
     }
 }

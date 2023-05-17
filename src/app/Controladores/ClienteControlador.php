@@ -31,11 +31,29 @@ class ClienteControlador
     }
 
     public function store(){
-        $cliente=new Cliente('Alba',4,3);
+        $cliente = new Cliente($_POST['nombre'],$_POST['numero'],$_POST['maxAlquilerConcurrente']);
+
         ClienteDatabase::staticStore($cliente);
+
+        echo "Se ha almacenado el cliente correctamente";
     }
 
     public function index(){
-        echo "He entrado en el método índex";
+        $clientes=ClienteDatabase::staticLoadAll();
+        var_dump($clientes);
+        echo json_encode($clientes);
+    }
+
+    public function update(int $numcliente){
+        parse_str(file_get_contents("php://input"),$put_vars);
+
+        $cliente = ClienteDatabase::modificarCliente($numcliente,$put_vars);
+
+        echo json_encode($cliente);
+    }
+
+    public function destroy(int $numCliente){
+        ClienteDatabase::staticDeleteFromID($numCliente);
+        echo "Cliente Borrado";
     }
 }
