@@ -46,6 +46,15 @@ private static $installed = array (
       ),
       'reference' => NULL,
     ),
+    'rakit/validation' => 
+    array (
+      'pretty_version' => 'v1.4.0',
+      'version' => '1.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'ff003a35cdf5030a5f2482299f4c93f344a35b29',
+    ),
   ),
 );
 private static $canGetVendors;

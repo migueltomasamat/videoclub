@@ -52,4 +52,20 @@ class Soporte implements \JsonSerializable
           "precio"=>$this->precio
         ];
     }
+
+    /**
+     * @param string $titulo
+     */
+    public function setTitulo(string $titulo): void
+    {
+        $this->titulo = $titulo;
+    }
+
+    /**
+     * @param float $precio
+     */
+    public function setPrecio(float $precio): void
+    {
+        $this->precio = $precio;
+    }
 }
