@@ -30,7 +30,7 @@ class ClienteDatabase
         }
         return $arrayClientes;
     }
-    public static function staticLoad(int $numero):Cliente{
+    public static function staticLoad(string $numero):Cliente{
         $conexion = \app\Databases\BD::crearConexion();
         $query ="SELECT * FROM cliente WHERE numero=?";
         $sentenciaPreparada= $conexion->prepare($query);
@@ -53,12 +53,13 @@ class ClienteDatabase
     public static function staticStore(Cliente $cliente){
 
         $conexion = \app\Databases\BD::crearConexion();
-        $query="insert into cliente (nombre,num_soportes_alquilados,max_alquiler_concurrente) values(?,?,?)";
+        $query="insert into cliente (numero,nombre,num_soportes_alquilados,max_alquiler_concurrente) values(?,?,?,?)";
         $sentenciaPreparada = $conexion->prepare($query);
 
-        $sentenciaPreparada->bindValue(1,$cliente->nombre);
-        $sentenciaPreparada->bindValue(2,$cliente->getNumSoportesAlquilados());
-        $sentenciaPreparada->bindValue(3,$cliente->getMaxAlquilerConcurrente());
+        $sentenciaPreparada->bindValue(1,$cliente->getNumero());
+        $sentenciaPreparada->bindValue(2,$cliente->nombre);
+        $sentenciaPreparada->bindValue(3,$cliente->getNumSoportesAlquilados());
+        $sentenciaPreparada->bindValue(4,$cliente->getMaxAlquilerConcurrente());
 
         $sentenciaPreparada->execute();
     }
@@ -81,7 +82,7 @@ class ClienteDatabase
         }
     }
 
-    public static function staticDeleteFromID(int $id){
+    public static function staticDeleteFromID(string $id){
         $conexion = BD::crearConexion();
         $query = "delete from cliente where numero=:iden";
 
@@ -95,7 +96,7 @@ class ClienteDatabase
         self::staticDeleteFromID($cliente->getNumero());
     }
 
-    public static function obtenerNumSoportesCliente(int $id):int{
+    public static function obtenerNumSoportesCliente(string $id):int{
         $conexion = BD::crearConexion();
         $query = "SELECT count(*) as 'num_soportes' from soporte where num_cliente=?";
         $sentenciaPreparada = $conexion->prepare($query);
@@ -107,7 +108,7 @@ class ClienteDatabase
         return $result['num_soportes'];
     }
 
-    public static function obtenerSoportesCliente (int $id):array|null{
+    public static function obtenerSoportesCliente (string $id):array|null{
         $conexion = BD::crearConexion();
         $query="select * from soporte where num_cliente=:id_cliente";
         $sentenciaPreparada = $conexion->prepare($query);
@@ -123,7 +124,7 @@ class ClienteDatabase
 
     }
 
-    public static function modificarCliente(int $id, array $datosCliente):?Cliente{
+    public static function modificarCliente(string $id, array $datosCliente):?Cliente{
         $cliente =false;
         $conexion = BD::crearConexion();
         $sentenciaPreparada= null;

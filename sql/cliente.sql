@@ -1,5 +1,5 @@
 create table cliente(
-    numero int AUTO_INCREMENT primary key,
+    numero char(36) primary key,
     nombre varchar(100) Not null,
     num_soportes_alquilados int,
     max_alquiler_concurrente int default 3
@@ -11,7 +11,7 @@ CREATE table soporte (
     numero int AUTO_INCREMENT primary key,
     titulo varchar(100),
     precio float default 2.5,
-    num_cliente int,
+    num_cliente char(36),
     constraint fk_soporte_cliente FOREIGN key (num_cliente) references cliente(numero)
 );
 

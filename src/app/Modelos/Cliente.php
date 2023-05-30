@@ -10,12 +10,12 @@ use BD;
 class Cliente implements \JsonSerializable
 {
     public string $nombre;
-    private int $numero;
+    private string $numero;
     private array $soportesAlquilados=[];
     private int $numSoportesAlquilados;
     private int $maxAlquilerConcurrente;
 
-    public function __construct(string $nombre, int $numero, int $maxAlquilerConcurrente=3){
+    public function __construct(string $nombre, string $numero, int $maxAlquilerConcurrente=3){
         $this->nombre=$nombre;
         $this->numero=$numero;
         $this->maxAlquilerConcurrente=$maxAlquilerConcurrente;
@@ -25,7 +25,7 @@ class Cliente implements \JsonSerializable
     /**
      * @return int
      */
-    public function getNumero(): int
+    public function getNumero(): string
     {
         return $this->numero;
     }
@@ -33,7 +33,7 @@ class Cliente implements \JsonSerializable
     /**
      * @param int $numero
      */
-    public function setNumero(int $numero): void
+    public function setNumero(string $numero): void
     {
         $this->numero = $numero;
     }

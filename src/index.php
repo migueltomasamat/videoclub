@@ -10,6 +10,9 @@ $router = new Router();
 $router->get('/',[VistaIndex::class,'index']);
 
 $router->get("/clientes",[ClienteControlador::class,'index'])
+    ->get('/mostrar-clientes',[ClienteControlador::class,'showAll'])
+    ->get('/mostrar-cliente',[ClienteControlador::class,'showCliente'])
+    ->get('/insertar-cliente',[ClienteControlador::class,'insertarCliente'])
     ->get('/cliente',[ClienteControlador::class,'show'])
     ->post('/cliente',[ClienteControlador::class,'store'])
     ->put('/cliente',[ClienteControlador::class,'update'])
